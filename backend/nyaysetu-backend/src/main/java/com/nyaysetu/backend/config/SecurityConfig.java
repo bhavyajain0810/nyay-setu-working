@@ -53,20 +53,29 @@ public class SecurityConfig {
                     .map(String::trim)
                     .filter(s -> !s.isEmpty())
                     .collect(java.util.stream.Collectors.toList());
-            boolean hasWildcardOrigin = origins.stream().anyMatch(origin -> origin.contains("*"));
-            if (hasWildcardOrigin) {
+            
+            boolean hasWildcard = origins.stream().anyMatch(o -> o.contains("*"));
+            if (hasWildcard) {
                 configuration.setAllowedOriginPatterns(origins);
+                // Security: Cannot allow credentials with wildcard patterns
+                configuration.setAllowCredentials(false);
             } else {
                 configuration.setAllowedOrigins(origins);
+                configuration.setAllowCredentials(true);
             }
         } else {
-            // Use patterns for wildcard with allowCredentials(true)
-            configuration.setAllowedOriginPatterns(java.util.Collections.singletonList("*"));
+            // SAFE DEFAULT: Allow local development origins only
+            configuration.setAllowedOrigins(java.util.Arrays.asList(
+                "http://localhost:5173", 
+                "http://localhost:3000", 
+                "http://localhost"
+            ));
+            configuration.setAllowCredentials(true);
         }
         
         configuration.setAllowedMethods(java.util.Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(java.util.Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
+        
         org.springframework.web.cors.UrlBasedCorsConfigurationSource source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

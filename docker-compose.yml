@@ -73,13 +73,10 @@ services:
     container_name: react-app
     ports:
       - "80:80"
+    mem_limit: 128M
     depends_on:
       - backend-spring
       - backend-python
-    deploy:
-      resources:
-        limits:
-          memory: 128M
     restart: always
 
 volumes:
