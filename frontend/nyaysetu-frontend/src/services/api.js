@@ -8,12 +8,13 @@ import axios from 'axios';
 // In production: Replace with actual backend URL via environment variable
 // Check multiple variable names to be safe
 // Smart Base URL detection
-const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-const PROD_BACKEND = 'https://nyaysetubackend.onrender.com';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ||
-    import.meta.env.VITE_API_URL ||
-    (isLocalhost ? 'http://localhost:8080' : PROD_BACKEND);
+if (!API_BASE_URL) {
+  throw new Error(
+    "VITE_API_BASE_URL is missing. Please check your .env file."
+  );
+}
 
 const api = axios.create({
     baseURL: API_BASE_URL,

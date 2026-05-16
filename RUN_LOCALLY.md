@@ -164,3 +164,17 @@ When running in **Docker**:
 **Gateway**: Local on 9000 (routes to all services)
 
 **Everything uses `localhost`!** 🚀
+
+## Environment Setup
+
+Create a `.env` file from `.env.example`
+
+```bash
+cp .env.example .env
+```
+
+Set the backend API URL:
+
+```env
+REACT_APP_API_BASE_URL=http://localhost:5000
+```
