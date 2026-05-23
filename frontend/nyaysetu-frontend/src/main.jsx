@@ -57,7 +57,9 @@ const Root = () => {
 
     // 3. The temporary function for the "Stay Logged In" button
     const handleRefresh = () => {
-        console.log("User wants to stay logged in!");
+        if (import.meta.env.DEV) {
+            console.log("User wants to stay logged in!");
+        }
         setShowWarning(false);
     };
 
