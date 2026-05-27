@@ -2,11 +2,12 @@ import { StrictMode, useState, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import './styles/global.css'
 import './styles/responsive.css'
+import './styles/guest.css'
 import './i18n' // Initialize i18n before app
 import App from './App.jsx'
 import { useSessionMonitor } from './hooks/useSessionMonitor';
 import SessionWarningBanner from './components/SessionWarningBanner';
-
+import { Toaster } from "react-hot-toast";
 /**
  * Register service worker and handle updates
  * Only runs on production builds (preview/production), not on dev server
@@ -67,7 +68,6 @@ const Root = () => {
 
     return (
         <StrictMode>
-            {/* 4. The Session Banner renders here when showWarning is true */}
             {showWarning && (
                 <SessionWarningBanner
                     onRefresh={handleRefresh}
@@ -75,7 +75,10 @@ const Root = () => {
                 />
             )}
 
-            <App swRegistration={swRegistration} />
+            <>
+                <Toaster position="top-right" />
+                <App swRegistration={swRegistration} />
+            </>
         </StrictMode>
     );
 };
