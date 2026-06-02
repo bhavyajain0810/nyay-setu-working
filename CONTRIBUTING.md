@@ -4,6 +4,19 @@ Thank you for your interest in contributing to Nyay Saarthi. We appreciate your 
 
 Whether you are a seasoned open-source contributor or participating in programs like GSSoC (GirlScript Summer of Code), you are welcome here. This document outlines the process for contributing to the project.
 
+> **TL;DR - Quick Start for Busy Contributors**
+> 
+> 1. Fork and clone the repo
+> 2. Create a branch: `git checkout -b feat/your-feature`
+> 3. Set up with: `docker-compose up -d` 
+> 4. Make changes and test locally
+> 5. Commit with clear messages (see [Conventional Commits](#commit-message-examples))
+> 6. Push and open a PR with issue link
+> 7. Respond to review feedback
+> 8. Merge! 🎉
+>
+> Need help? Check [Getting Help](#getting-help) section.
+
 <hr/>
 
 ## Table of Contents
@@ -747,8 +760,170 @@ docker-compose logs -f --tail=100
 
 ## Getting Help
 
-If you encounter technical issues or have questions regarding the implementation:
-- Ask for clarification directly in the comments of your assigned GitHub Issue.
-- Tag the maintainers for guidance.
+### Resources
 
-We actively monitor the repository and are committed to helping you get your PR successfully merged.
+**Before asking for help, check these resources:**
+1. [README.md](README.md) - Project overview and quick start
+2. [Setup Guide](./docs/setup.md) - Detailed setup instructions
+3. [Architecture Overview](./docs/architecture/overview.md) - System design
+4. [API Documentation](./API_TESTING_GUIDE.md) - API reference and examples
+5. [Existing Issues](https://github.com/viru0909-dev/nyay-setu-working/issues) - Search for similar problems
+6. [Project Discussions](https://github.com/viru0909-dev/nyay-setu-working/discussions) - Common questions
+
+### Getting Support
+
+#### For Issues During Development
+1. **Issue Comments:** Ask directly in the GitHub issue you're assigned to
+2. **PR Comments:** Discuss your changes in the PR comments
+3. **Discussions:** Use GitHub Discussions for broader questions
+4. **Discord/Slack:** Join the community server (link in README)
+
+#### For Technical Problems
+```
+Problem: Build fails locally
+Solution:
+1. Try `mvn clean install` (Backend) or `npm ci` (Frontend)
+2. Check environment variables (.env file)
+3. Verify Docker services: `docker-compose ps`
+4. Check logs: `docker-compose logs [service]`
+5. Ask in issue with error message
+```
+
+#### Asking Good Questions
+When asking for help, provide:
+- **What you're trying to do** - Context of the task
+- **What you've tried** - Steps you've already taken
+- **What happened** - Error messages or unexpected behavior
+- **Environment** - OS, software versions, relevant config
+- **Reproducible steps** - How to recreate the issue
+
+**Example Good Question:**
+```
+I'm working on issue #456 - Add JWT refresh token.
+I've set up the project and created the /auth/refresh endpoint.
+When I test with cURL, I get: 
+  {"error": "Invalid refresh token"}
+I've verified the token is being saved correctly.
+My environment:
+- Java 11
+- Spring Boot 2.7
+- PostgreSQL 12
+
+Steps to reproduce:
+1. Login and get refresh token
+2. Call POST /auth/refresh with the token
+3. See error above
+
+What am I missing?
+```
+
+### Code Review Tips
+
+When your PR gets reviewed:
+
+1. **Be open to feedback** - Reviews help improve code quality
+2. **Respond promptly** - Don't leave reviewers hanging
+3. **Ask for clarification** - If feedback is unclear, ask
+4. **Acknowledge good points** - Thank reviewers for improvements
+5. **Make requested changes** - Push new commits, don't force push
+6. **Mark conversations as resolved** - Once you've addressed feedback
+
+**Example Response:**
+```
+Great point about error handling! I've updated the code to:
+- Add try-catch around database calls
+- Return proper HTTP status codes
+- Add logging for debugging
+
+I pushed a new commit with these changes. Let me know if you'd like any other improvements!
+```
+
+### Escalating Issues
+
+If you're stuck and can't get help from the community:
+
+1. **Tag maintainers:** Use `@maintainer-name` in GitHub issues
+2. **Create a detailed issue:** Include all information from "Asking Good Questions"
+3. **Set priority:** Use issue labels (critical, high, medium, low)
+4. **Follow up:** Check back after 2-3 days if no response
+
+### Resources by Role
+
+**New Contributors:**
+- Read [API_QUICKSTART.md](./API_QUICKSTART.md) - Quick API intro
+- Check `good first issue` label
+- Join community discussions
+
+**Backend Developers:**
+- Review [Architecture Overview](./docs/architecture/overview.md)
+- Study [openapi.yaml](./openapi.yaml)
+- Check [API_ENDPOINTS_COMPREHENSIVE.md](./API_ENDPOINTS_COMPREHENSIVE.md)
+
+**Frontend Developers:**
+- Review component structure in `src/components/`
+- Check existing hooks in `src/hooks/`
+- Study Tailwind CSS patterns used
+
+**DevOps/Infrastructure:**
+- Review [docker-compose.yml](./docker-compose.yml)
+- Check [.github/workflows/](./.github/workflows/)
+- Review deployment configuration
+
+**Documentation:**
+- Check existing docs in [docs/](./docs/)
+- Review API documentation in [API_*.md](./API_QUICKSTART.md)
+- Help improve clarity and examples
+
+### Getting in Touch
+
+| Channel | Best For | Response Time |
+|---------|----------|----------------|
+| GitHub Issues | Feature requests, bugs | 24-48 hours |
+| GitHub PR Comments | Code review feedback | 12-24 hours |
+| GitHub Discussions | Questions, ideas | 24-48 hours |
+| Discord/Slack | Real-time chat | Variable |
+| Email | Formal concerns | 48-72 hours |
+
+**Community Links:**
+- 📧 Email: support@nyaysetu.in
+- 💬 Discord: [Join Community](https://discord.gg/nyaysetu)
+- 📱 Twitter: [@NyaySetu](https://twitter.com/nyaysetu)
+- 🐙 GitHub: [Issues](https://github.com/viru0909-dev/nyay-setu-working/issues)
+
+We actively monitor the repository and are committed to helping you get your PR successfully merged. Don't hesitate to ask for help!
+
+<hr/>
+
+## Recognition & Credits
+
+### Contributors
+All contributors are recognized in:
+- GitHub Contributors page
+- [CONTRIBUTORS.md](./CONTRIBUTORS.md) file
+- Release notes for significant contributions
+
+### Special Thanks
+We especially appreciate contributions in these areas:
+- 🐛 Bug reports with detailed reproduction steps
+- 📖 Documentation improvements and translations
+- 🧪 Test coverage improvements
+- ♿ Accessibility improvements
+- 🌍 Internationalization support
+- 🚀 Performance optimizations
+
+<hr/>
+
+## License
+
+By contributing to Nyay Setu, you agree that your contributions will be licensed under its open-source license. See [LICENSE](./LICENSE) for details.
+
+<hr/>
+
+## Code of Conduct
+
+This project and everyone participating in it is governed by the [Code of Conduct](./CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
+
+<hr/>
+
+**Happy contributing! 🎉**
+
