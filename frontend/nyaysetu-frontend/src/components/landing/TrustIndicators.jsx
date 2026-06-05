@@ -113,7 +113,7 @@ export default function TrustIndicators() {
                                 transition={{ delay: 0.1 }}
                                 whileHover={{ y: -10, transition: { duration: 0.3 } }}
                                 style={{
-                                    padding: '4rem 3rem',
+                                    padding: '3rem 2rem',
                                     background: 'var(--bg-glass)',
                                     backdropFilter: 'var(--glass-blur)',
                                     borderRadius: '24px',
@@ -121,7 +121,8 @@ export default function TrustIndicators() {
                                     textAlign: 'center',
                                     cursor: 'pointer',
                                     boxShadow: 'var(--shadow-glass)',
-                                    minWidth: '400px',
+                                    minWidth: '260px',
+                                    maxWidth: '90vw',
                                     flex: '0 0 auto',
                                     display: 'flex',
                                     flexDirection: 'column',
@@ -187,6 +188,18 @@ export default function TrustIndicators() {
                     }
                     .trust-track:hover {
                         animation-play-state: paused;
+                    }
+                    .trust-scroll-mask {
+                        overflow-x: hidden;
+                    }
+                    @media (max-width: 768px) {
+                        .trust-track {
+                            animation-duration: 25s;
+                        }
+                        .trust-track > div {
+                            min-width: 260px !important;
+                            padding: 2rem 1.5rem !important;
+                        }
                     }
                 `}</style>
             </div>
