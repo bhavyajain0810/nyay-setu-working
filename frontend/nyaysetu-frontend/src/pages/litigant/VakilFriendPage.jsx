@@ -16,6 +16,8 @@ export default function VakilFriendChat() {
     const [inputMessage, setInputMessage] = useState('');
     const [sessionId, setSessionId] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [rateLimited, setRateLimited] = useState(false);
+    const [cooldown, setCooldown] = useState(0);
     const [isStarting, setIsStarting] = useState(true);
     const [readyToFile, setReadyToFile] = useState(false);
     const [isCompleting, setIsCompleting] = useState(false);
@@ -234,6 +236,21 @@ export default function VakilFriendChat() {
         return legalKeywords.some(kw => lower.includes(kw));
     };
 
+    const startCooldown = (seconds = 60) => {
+        setRateLimited(true);
+        setCooldown(seconds);
+        const interval = setInterval(() => {
+            setCooldown(prev => {
+                if (prev <= 1) {
+                    clearInterval(interval);
+                    setRateLimited(false);
+                    return 0;
+                }
+                return prev - 1;
+            });
+        }, 1000);
+    };
+
     const sendMessage = async (audioData = null, overrideText = null) => {
         const textToSend = overrideText || inputMessage;
         if ((!textToSend.trim() && !audioData) || isLoading || isStarting) return;
@@ -304,10 +321,19 @@ export default function VakilFriendChat() {
             setReadyToFile(data.readyToFile);
         } catch (err) {
             console.error('Failed to send message:', err);
-            setMessages(prev => [...prev, {
-                role: 'assistant',
-                content: t('vakilFriend.sendError')
-            }]);
+            if (err.response?.status === 429) {
+                const retryAfter = parseInt(err.response.headers['retry-after'] || '60');
+                startCooldown(retryAfter);
+                setMessages(prev => [...prev, {
+                    role: 'assistant',
+                    content: `⏳ You've sent too many messages. Please wait **${retryAfter} seconds** before continuing.`
+                }]);
+            } else {
+                setMessages(prev => [...prev, {
+                    role: 'assistant',
+                    content: t('vakilFriend.sendError')
+                }]);
+            }
         } finally {
             setIsLoading(false);
         }
@@ -1851,26 +1877,26 @@ export default function VakilFriendChat() {
 
                         <button
                             onClick={() => sendMessage()}
-                            disabled={!inputMessage.trim() || isLoading || isStarting}
+                            disabled={!inputMessage.trim() || isLoading || isStarting || rateLimited}
                             style={{
                                 padding: '0.75rem 1rem',
-                                background: (!inputMessage.trim() || isLoading || isStarting)
+                                background: (!inputMessage.trim() || isLoading || isStarting || rateLimited)
                                     ? 'var(--bg-glass-strong)'
                                     : 'var(--color-primary)',
                                 border: 'none',
                                 borderRadius: '0.625rem',
-                                color: (!inputMessage.trim() || isLoading || isStarting) ? 'var(--text-secondary)' : 'white',
-                                cursor: (!inputMessage.trim() || isLoading || isStarting) ? 'not-allowed' : 'pointer',
+                                color: (!inputMessage.trim() || isLoading || isStarting || rateLimited) ? 'var(--text-secondary)' : 'white',
+                                cursor: (!inputMessage.trim() || isLoading || isStarting || rateLimited) ? 'not-allowed' : 'pointer',
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
-                                boxShadow: (!inputMessage.trim() || isLoading || isStarting)
+                                boxShadow: (!inputMessage.trim() || isLoading || isStarting || rateLimited)
                                     ? 'none'
                                     : '0 4px 15px rgba(30, 42, 68, 0.4)',
                                 transition: 'all 0.2s'
                             }}
                         >
-                            <Send size={20} />
+                            {rateLimited ? <span style={{fontSize:'0.75rem', fontWeight:'700'}}>{cooldown}s</span> : <Send size={20} />}
                         </button>
                     </div>
                 </div>
