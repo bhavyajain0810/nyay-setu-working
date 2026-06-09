@@ -221,7 +221,6 @@ function App({ swRegistration }) {
                         <GuestOnboardingHint />
                         <ScrollToTop />
                         <BackToTop />
-                        <ScrollProgressBar />
                         
                         <Suspense fallback={<LoadingSpinner fullScreen message="Loading NyaySetu..." />}>
                             <Routes>
