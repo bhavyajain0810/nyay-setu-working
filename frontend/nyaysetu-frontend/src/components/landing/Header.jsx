@@ -103,12 +103,6 @@ export default function Header({ hideAuthButtons = false }) {
     });
 
     const renderNavItem = (item) => {
-        const baseStyle = navLinkStyle(item.href);
-
-        const displayLabel =
-            t(item.labelKey) === item.labelKey
-                ? item.labelKey
-                : t(item.labelKey);
 
         const underline = (
             <span
@@ -133,6 +127,21 @@ export default function Header({ hideAuthButtons = false }) {
             />
         );
 
+        const currentPathWithHash = location.pathname + location.hash;
+        let isActive = false;
+        if (item.href === '/') {
+            // Home is only active if we are on '/' AND there is no hash
+            isActive = location.pathname === '/' && !location.hash;
+        } else if (item.href) {
+            // Other tabs are active if they match the exact path+hash OR just the path
+            isActive = currentPathWithHash === item.href || location.pathname === item.href;
+        }
+        // -------------------------------------------------------------
+
+        const baseStyle = navLinkStyle(isActive);
+        // Fallback to labelKey directly if translation returns the exact key
+
+        
         const sharedProps = {
             style: baseStyle,
             onMouseEnter: e => {
@@ -164,19 +173,6 @@ export default function Header({ hideAuthButtons = false }) {
                 }
             },
         };
-        const currentPathWithHash = location.pathname + location.hash;
-        let isActive = false;
-        if (item.href === '/') {
-            // Home is only active if we are on '/' AND there is no hash
-            isActive = location.pathname === '/' && !location.hash;
-        } else if (item.href) {
-            // Other tabs are active if they match the exact path+hash OR just the path
-            isActive = currentPathWithHash === item.href || location.pathname === item.href;
-        }
-        // -------------------------------------------------------------
-
-        const baseStyle = navLinkStyle(isActive);
-        // Fallback to labelKey directly if translation returns the exact key
 
         const displayLabel = t(item.labelKey) === item.labelKey ? item.labelKey : t(item.labelKey);
 
@@ -211,7 +207,6 @@ export default function Header({ hideAuthButtons = false }) {
                 </Link>
             );
         }
-
         return (
             <a
                 key={item.labelKey}
