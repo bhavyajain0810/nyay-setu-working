@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import java.util.Map;
 /**
  * REST Controller that exposes API endpoints for submitting user feedback loops 
  * and retrieving AI response quality tracking metrics for Vakil Friend queries.
+ * Hardened with strict role-based access controls on administrative endpoints.
  */
 @RestController
 @RequestMapping("/api/v1/vakil-friend/feedback")
@@ -27,7 +29,7 @@ public class VakilFriendFeedbackController {
 
     /**
      * POST endpoint to submit user feedback loop parameters for an AI response.
-     * Maps query ID, response ID, feedback type (HELPFUL/NOT_HELPFUL), and comments.
+     * Mapped publicly to allow any authenticated user to rate responses.
      */
     @PostMapping
     public ResponseEntity<Map<String, Object>> submitFeedback(@RequestBody VakilFriendFeedback feedbackPayload) {
@@ -62,8 +64,10 @@ public class VakilFriendFeedbackController {
 
     /**
      * GET endpoint to aggregate all logs for administrator analytics dashboard panels.
+     * Hardened Security: Restricts execution explicitly to HIGH-PRIVILEGE ADMIN users.
      */
     @GetMapping("/analytics")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<VakilFriendFeedback>> getAdminAnalyticsMetrics() {
         log.info("[FeedbackAPI] Dispatching global feedback log histories row collection layer for admin metrics tracking.");
         try {
@@ -77,8 +81,10 @@ public class VakilFriendFeedbackController {
 
     /**
      * GET endpoint to filter feedback tracking parameters by target feedback type (e.g., NOT_HELPFUL).
+     * Hardened Security: Restricts execution explicitly to HIGH-PRIVILEGE ADMIN users.
      */
     @GetMapping("/analytics/filter")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<VakilFriendFeedback>> filterMetricsByType(@RequestParam String type) {
         log.info("[FeedbackAPI] Executing granular filter parameter query against feedback type matching: {}", type);
         try {
