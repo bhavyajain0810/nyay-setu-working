@@ -41,7 +41,6 @@ Public API
     RetrievedChunk                                     # typed result row
 """
 
-import asyncio
 import logging
 from dataclasses import dataclass, field
 from typing import Any, Optional
@@ -136,9 +135,7 @@ def _resolve_defaults(
 def _filter_by_source(candidates: list[dict], source: Optional[str]) -> list[dict]:
     if not source:
         return candidates
-    return [
-        c for c in candidates if (c.get("metadata") or {}).get("source") == source
-    ]
+    return [c for c in candidates if (c.get("metadata") or {}).get("source") == source]
 
 
 def _finalize(
