@@ -53,8 +53,8 @@ export default function HowItWorks() {
                         style={{
                             display: 'inline-block',
                             padding: '0.75rem 1.5rem',
-                            background: 'rgba(139, 92, 246, 0.1)',
-                            border: '1px solid rgba(139, 92, 246, 0.3)',
+                            background: 'var(--bg-glass)',
+                            border: 'var(--border-glass)',
                             borderRadius: '2rem',
                             marginBottom: '1.5rem'
                         }}
@@ -122,13 +122,14 @@ export default function HowItWorks() {
                                 style={{
                                     textAlign: 'center',
                                     position: 'relative',
-                                    padding: '2.5rem 1.5rem',
-                                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                                    border: '1px solid rgba(255, 255, 255, 0.12)',
-                                    borderRadius: '16px',
-                                    boxShadow: '0 4px 24px rgba(0, 0, 0, 0.4)',
+                                    padding: '1.5rem',
+                                    borderRadius: '1.5rem',
                                     transition: 'all 0.3s ease',
-                                    cursor: 'pointer'
+                                    cursor: 'pointer',
+                                    background: 'var(--bg-glass)',
+                                    border: 'var(--border-glass)',
+                                    backdropFilter: 'var(--glass-blur)',
+                                    boxShadow: 'var(--shadow-glass)'
                                 }}
                             >
                                 <motion.div
@@ -138,9 +139,9 @@ export default function HowItWorks() {
                                         width: '120px',
                                         height: '120px',
                                         margin: '0 auto 2rem',
-                                        background: 'var(--bg-glass-strong)',
+                                        background: 'var(--bg-glass)',
                                         backdropFilter: 'var(--glass-blur)',
-                                        border: `3px solid ${step.color}40`,
+                                        border: 'var(--border-glass)',
                                         borderRadius: '2rem',
                                         display: 'flex',
                                         alignItems: 'center',
@@ -157,10 +158,10 @@ export default function HowItWorks() {
                                 <div style={{
                                     display: 'inline-block',
                                     padding: '0.5rem 1rem',
-                                    background: `${step.color}10`,
-                                    border: `2px solid ${step.color}30`,
+                                    background: 'var(--bg-glass)',
+                                    border: 'var(--border-glass)',
                                     borderRadius: '2rem',
-                                    color: step.color,
+                                    color: 'var(--text-main)',
                                     fontWeight: '900',
                                     fontSize: '0.875rem',
                                     marginBottom: '1rem',
@@ -201,7 +202,7 @@ export default function HowItWorks() {
                                             right: '-65px',
                                             display: 'flex',
                                             alignItems: 'center',
-                                            color: step.color,
+                                            color: 'var(--text-secondary)',
                                             zIndex: 10,
                                         }}
                                     >
@@ -209,7 +210,7 @@ export default function HowItWorks() {
                                             style={{
                                                 width: '35px',
                                                 height: '2px',
-                                                background: step.color,
+                                                background: 'var(--text-secondary)',
                                                 opacity: 0.4,
                                             }}
                                         />
@@ -268,3 +269,4 @@ export default function HowItWorks() {
         </section>
     );
 }
+
