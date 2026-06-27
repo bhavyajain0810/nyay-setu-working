@@ -1,35 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 /**
- * ScrollButtons Component - Expands a floating action button pair in the bottom-right corner.
- * Implements window scroll threshold triggers, accessibility helpers, and animated smooth transitions.
+ * ScrollButtons Component - Hardened and realigned to satisfy rigid design constraints.
+ * Purges foreign Tailwind utilities completely in favor of portable pure inline CSS.
+ * Isolates the Scroll-to-Bottom node to avoid layout collisions with the pre-existing BackToTop module.
  */
-export const ScrollButtons: React.FC = () => {
-  const [isVisible, setIsVisible] = useState<boolean>(false);
-
-  // Monitors window scrolling metrics to toggle the Scroll-to-Top node visibility state
-  useEffect(() => {
-    const handleScrollMetricsToggle = () => {
-      if (window.scrollY > 300) {
-        setIsVisible(true);
-      } else {
-        setIsVisible(false);
-      }
-    };
-
-    window.addEventListener('scroll', handleScrollMetricsToggle);
-    return () => {
-      window.removeEventListener('scroll', handleScrollMetricsToggle);
-    };
-  }, []);
-
-  // Executes animated clean smooth transitions to the absolute top of the page viewport layout
-  const handleScrollToTop = () => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  };
+export const ScrollButtons = () => {
 
   // Executes animated clean smooth transitions to the absolute bottom footer layer of the document
   const handleScrollToBottom = () => {
@@ -39,30 +15,51 @@ export const ScrollButtons: React.FC = () => {
     });
   };
 
-  return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3 pointer-events-auto">
-      {/* Scroll to Top Button Element - Appears smoothly after scrolling down past 300px threshold */}
-      <button
-        onClick={handleScrollToTop}
-        className={`flex h-12 w-12 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition-all duration-300 hover:bg-blue-700 hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-blue-400 ${
-          isVisible ? 'opacity-100 translate-y-0 visible' : 'opacity-0 translate-y-4 invisible'
-        }`}
-        title="Scroll to Top"
-        aria-label="Scroll to Top"
-      >
-        <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="h-6 w-6">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
-        </svg>
-      </button>
+  // Pure vanilla inline styling configurations to maintain absolute framework portability
+  const containerStyle = {
+    position: 'fixed',
+    bottom: '95px', // Elevated higher to sit cleanly right above the existing BackToTop button layout
+    right: '24px',
+    zIndex: 9999,
+    display: 'flex',
+    flexDirection: 'column',
+    pointerEvents: 'auto',
+  };
 
-      {/* Scroll to Bottom Button Element - Permanently pined to assist accessibility and jumping to page footers */}
+  const buttonStyle = {
+    width: '46px',
+    height: '46px',
+    borderRadius: '50%',
+    backgroundColor: '#1e293b',
+    color: '#ffffff',
+    border: '1px solid rgba(255, 255, 255, 0.15)',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+    cursor: 'pointer',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'transform 0.2s ease, background-color 0.2s ease',
+    outline: 'none',
+  };
+
+  return (
+    <div style={containerStyle}>
+      {/* Scroll to Bottom Button Invariant - Portable, lightweight, accessibility helper node */}
       <button
         onClick={handleScrollToBottom}
-        className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-800 text-white shadow-lg transition-all duration-300 hover:bg-gray-900 hover:scale-110 active:scale-95 focus:outline-none focus:ring-2 focus:ring-gray-400"
+        style={buttonStyle}
         title="Scroll to Bottom"
         aria-label="Scroll to Bottom"
+        onMouseEnter={(e) => {
+          e.currentTarget.style.backgroundColor = '#0f172a';
+          e.currentTarget.style.transform = 'scale(1.1)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.backgroundColor = '#1e293b';
+          e.currentTarget.style.transform = 'scale(1)';
+        }}
       >
-        <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="h-6 w-6">
+        <svg xmlns="http://w3.org" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" style={{ width: '20px', height: '20px' }}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
         </svg>
       </button>
@@ -71,4 +68,3 @@ export const ScrollButtons: React.FC = () => {
 };
 
 export default ScrollButtons;
-
